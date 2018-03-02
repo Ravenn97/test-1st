@@ -1,19 +1,17 @@
 import requests
 from bs4 import BeautifulSoup
 
-def get_string():
-	r = requests.get("https://www.vanityfair.com/style/society/2014/06/monica-lewinsky-humiliation-culture")
-	data = r.text
-	soup = BeautifulSoup(data, "html.parser")
-	input_data = soup.get_text()
-	return input_data
+def write_file(input_data):
 
-def write_file():
+	r = requests.get(input_data) #lay du lieu tu link
+	data = r.text 
+	soup = BeautifulSoup(data, "html.parser") # chuyen text nhan duoc sang dinh dang html
 	file = open("conten.txt","w")
-	file.write(get_string())
+	for node in soup.find_all('p'):
+		file.write(node.find_all(text = True)[0])
 	file.close()
 	return
-
 if __name__ == '__main__':
-	write_file()
+	input_data = "https://www.vanityfair.com/style/society/2014/06/monica-lewinsky-humiliation-culture"
+	write_file(input_data)
 

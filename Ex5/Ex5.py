@@ -1,14 +1,23 @@
 import threading
 x = 0
+input_data = int(input("nhap vao 1 so bat ki "))
+
 def foo():
 	global x
-	input_data = int(input("nhap vao 1 so bat ki "))
-	for i in range(input_data):
+	for i in range(input_data-1):
 		x += i
-	print(x)
+	return
+
+def foo2():
+	for i in range(input_data - 1, input_data +1):
+		x += i
 	return
 if __name__ == '__main__':
 	threads = []
-	t = threading.Thread(target = foo)
-	threads.append(t)
-	t.start()
+	threads = [threading.Thread(target=foo), threading.Thread(target=foo2)]
+	for t in threads:
+		t.daemon = True
+		t.start()
+	for t in threads:
+		t.join()
+	print (x)
