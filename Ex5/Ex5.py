@@ -1,23 +1,21 @@
 import threading
-x = 0
-input_data = int(input("nhap vao 1 so bat ki "))
 
-def foo():
-	global x
-	for i in range(input_data-1):
-		x += i
-	return
+counter = 0
 
-def foo2():
-	for i in range(input_data - 1, input_data +1):
-		x += i
-	return
-if __name__ == '__main__':
-	threads = []
-	threads = [threading.Thread(target=foo), threading.Thread(target=foo2)]
-	for t in threads:
-		t.daemon = True
-		t.start()
-	for t in threads:
-		t.join()
-	print (x)
+def worker(start,end):
+    global counter
+    for i in range(start, end):
+        counter += i
+
+if __name__ == "__main__":
+    start = 1
+    input_data = int(input("nhap vao 1 so "))
+    number = int(input_data / 2)
+    threads = [threading.Thread(target = worker,args = (1, number)), threading.Thread(target = worker,args = (number, input_data))]
+    for thread in threads:
+        thread.setDaemon(True)
+        thread.start()
+    for thread in threads:
+        thread.join()
+
+    print (counter)
